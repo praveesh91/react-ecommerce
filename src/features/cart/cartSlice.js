@@ -9,16 +9,55 @@ const defaultState = {
   tax: 0,
   orderTotal: 0,
 };
+
+const getCartFromLocaltorage = () => {
+  return JSON.parse(localStorage.getItem("cart")) || defaultState;
+};
+
 const cartSlice = createSlice({
   name: "cart",
-  initialState: defaultState,
+  initialState: getCartFromLocaltorage || defaultState,
   reducers: {
     addItem: (state, action) => {
-      console.log(state);
+      const { product } = action.payload;
+      const item = state.cartItems.find((i) => i.cartID === product.cartID);
+      console.log({ item });
+
+      if (item) {
+        item.amount += product.amount;
+      } else {
+        state.cartItems.push(product);
+      }
+      state.numItemsInCart += product.amount;
+      state.cartTotal += product.price * product.amount;
+      cartSlice.caseReducers.calculateTotals(state);
+
+      //   toast.success("Items added");
     },
-    clearCart: (state) => {},
-    removeItem: (state, action) => {},
-    editItem: (state, action) => {},
+    clearCart: () => {
+      localStorage.setItem("cart", JSON.stringify(defaultState));
+    },
+    removeItem: (state, action) => {
+      const { cartID } = action.payload;
+      const product = state.cartItems.find((i) => i.cartID === cartID);
+      state.cartItems = state.cartItems.filter((el) => el.cartID !== cartID);
+      state.numItemsInCart -= product.amount;
+      state.cartTotal -= product.price * product.amount;
+      cartSlice.caseReducers.calculateTotals(state);
+    },
+    editItem: (state, action) => {
+      const { cartID, amount } = action.payload;
+      const item = state.cartItems.find((i) => i.cartID === cartID);
+      state.numItemsInCart += amount - item.amount;
+      state.cartTotal += item.price * (amount - item.amount);
+      item.amount = amount;
+      cartSlice.caseReducers.calculateTotals(state);
+    },
+    calculateTotals: (state, action) => {
+      state.tax = 0.1 * state.cartTotal;
+      state.orderTotal = state.cartTotal + state.shipping + state.tax;
+      localStorage.setItem("cart", JSON.stringify(state));
+    },
   },
 });
 

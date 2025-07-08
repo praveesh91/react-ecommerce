@@ -1,9 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import "react-toastify/dist/ReactToastify.css"; // Import CSS
 import "./index.css";
 import App from "./App.jsx";
 
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer
 import { store } from "./store.js";
 import { Provider } from "react-redux";
 
