@@ -63,7 +63,7 @@ const CartItem = ({ cartItem }) => {
         </div>
         {/* REMOVE */}
         <button
-          className="mt-2 link link-primary link-hover text-sm"
+          className="mt-2 link link-primary link-hover text-sm capitalize"
           onClick={removeItemFromTheCart}
         >
           remove
