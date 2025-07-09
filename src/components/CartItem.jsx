@@ -3,8 +3,6 @@ import { removeItem, editItem } from "../features/cart/cartSlice";
 import { useDispatch } from "react-redux";
 
 const CartItem = ({ cartItem }) => {
-  console.log(cartItem);
-
   const dispatch = useDispatch();
 
   const removeItemFromTheCart = () => {
