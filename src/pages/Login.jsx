@@ -1,7 +1,7 @@
 import React from "react";
 
 import { SubmitBtn, FormInput } from "../components";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, redirect } from "react-router-dom";
 import { customFetch } from "../utils";
 import { loginUser } from "../features/user/userSlice";
 import { ToastContainer, toast } from "react-toastify";
@@ -19,12 +19,12 @@ export const action =
       const response = await customFetch.post("/auth/local/", data);
       store.dispatch(loginUser(response.data));
       toast.success("Logged in successfully");
-      // return redirect("/login");
+      return redirect("/");
     } catch (error) {
       const errorMessage =
         error?.response?.data?.error?.message ||
         "please check your credentials";
-      console.log(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
