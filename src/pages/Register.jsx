@@ -15,7 +15,7 @@ export const action = async ({ request }) => {
   } catch (error) {
     const errorMessage =
       error?.response?.data?.error?.message || "please check your credentials";
-    console.log(error);
+    console.log(errorMessage);
   }
 };
 
