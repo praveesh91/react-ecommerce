@@ -2,10 +2,31 @@ import React from "react";
 
 import { SubmitBtn, FormInput } from "../components";
 import { Form, Link } from "react-router-dom";
+import { customFetch } from "../utils";
+import { loginUser } from "../features/user/userSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export const action = (store) => async () => {
-  console.log(store);
-};
+export const action =
+  (store) =>
+  async ({ request }) => {
+    const formData = await request.formData();
+    const data = {
+      identifier: formData.get("identifier"),
+      password: formData.get("password"),
+    };
+    try {
+      const response = await customFetch.post("/auth/local/", data);
+      store.dispatch(loginUser(response.data));
+      toast.success("Logged in successfully");
+      // return redirect("/login");
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.error?.message ||
+        "please check your credentials";
+      console.log(errorMessage);
+    }
+  };
 
 const Login = () => {
   return (
