@@ -9,8 +9,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userState);
 
-  console.log(user);
-
   const handleLogout = () => {
     dispatch(logoutUser());
     dispatch(clearCart());

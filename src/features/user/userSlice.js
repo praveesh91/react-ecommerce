@@ -27,7 +27,7 @@ const userSlice = createSlice({
       state.user = null;
       localStorage.removeItem("user");
     },
-    toggleTheme: (state, action) => {
+    toggleTheme: (state) => {
       const { dark, light } = themes;
       state.theme = state.theme === dark ? light : dark;
       document.documentElement.setAttribute("data-theme", state.theme);
