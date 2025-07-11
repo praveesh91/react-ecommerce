@@ -1,5 +1,23 @@
-import { Form, Link } from "react-router-dom";
+import { Form, Link, redirect } from "react-router-dom";
 import { FormInput, SubmitBtn } from "../components";
+import { customFetch } from "../utils";
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const data = {
+    username: formData.get("username"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+  };
+  try {
+    const response = await customFetch.post("/auth/local/register", data);
+    return redirect("/login");
+  } catch (error) {
+    const errorMessage =
+      error?.response?.data?.error?.message || "please check your credentials";
+    console.log(error);
+  }
+};
 
 const Register = () => {
   return (
@@ -7,6 +25,7 @@ const Register = () => {
       <Form
         method="POST"
         className="card w-96 p-8 bg-base-100 shadow-lg flex flex-col gap-y-4"
+        action={action}
       >
         <h4 className="text-center text-3xl font-bold">Register</h4>
         <FormInput type="text" label="username" name="username" />
