@@ -28,8 +28,7 @@ const userSlice = createSlice({
       const user = { ...action.payload.user, token: action.payload.jwt };
       state.user = user;
       localStorage.setItem("user", JSON.stringify(user));
-
-      console.log(getUserFromLocalStorage());
+      console.log(user);
     },
     logoutUser: (state) => {
       state.user = null;
