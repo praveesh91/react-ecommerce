@@ -42,7 +42,7 @@ const Login = () => {
       dispatch(loginUser(repsonse.data));
       toast.success("Welcome guest user");
       navigate("/");
-    } catch (erro) {
+    } catch (error) {
       toast.error("Guest user login error, please try again");
     }
   };
