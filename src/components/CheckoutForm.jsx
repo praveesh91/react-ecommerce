@@ -33,10 +33,9 @@ export const action =
         }
       );
       store.dispatch(clearCart());
-      toast.success("order placed successfully");
+      toast.success("Order placed successfully");
       return redirect("/orders");
     } catch (error) {
-      console.log(error);
       const errorMessage =
         error?.response?.data?.error?.message ||
         "there was an error placing your order";
