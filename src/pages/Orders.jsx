@@ -27,7 +27,6 @@ export const loader =
 
       return { orders: response.data.data, meta: response.data.meta };
     } catch (error) {
-      console.log(error);
       const errorMessage =
         error?.response?.data?.error?.message ||
         "there was an error accessing your orders";
