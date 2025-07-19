@@ -2,9 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import {
-  About,
-  Cart,
-  Checkout,
   Error,
   HomeLayout,
   Login,
@@ -26,6 +23,11 @@ import { action as loginAction } from "./pages/Login";
 import { action as checkoutAction } from "./components/CheckoutForm";
 
 import { store } from "./store.js";
+import { lazy, Suspense } from "react";
+
+const Checkout = lazy(() => import("./pages/Checkout.jsx"));
+const About = lazy(() => import("./pages/About.jsx"));
+const Cart = lazy(() => import("./pages/Cart.jsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,15 +63,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <Cart />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Cart />
+          </Suspense>
+        ),
       },
       {
         path: "/about",
-        element: <About />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <About />
+          </Suspense>
+        ),
       },
       {
         path: "/checkout",
-        element: <Checkout />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Checkout />
+          </Suspense>
+        ),
         loader: checkoutLoader(store),
         action: checkoutAction(store, queryClient),
       },
