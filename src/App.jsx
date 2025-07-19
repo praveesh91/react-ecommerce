@@ -1,16 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import {
-  Error,
-  HomeLayout,
-  Login,
-  Orders,
-  Register,
-  SingleProduct,
-  Landing,
-  Products,
-} from "./pages";
+import { Error, HomeLayout, Landing } from "./pages";
 import { ErrorElement } from "./components";
 import { loader as landingLoader } from "./pages/Landing";
 import { loader as singleProductLoader } from "./pages/SingleProduct";
@@ -28,6 +19,11 @@ import { lazy, Suspense } from "react";
 const Checkout = lazy(() => import("./pages/Checkout.jsx"));
 const About = lazy(() => import("./pages/About.jsx"));
 const Cart = lazy(() => import("./pages/Cart.jsx"));
+const Products = lazy(() => import("./pages/Products.jsx"));
+const Login = lazy(() => import("./pages/Login.jsx"));
+const Register = lazy(() => import("./pages/Register.jsx"));
+const Orders = lazy(() => import("./pages/Orders.jsx"));
+const SingleProduct = lazy(() => import("./pages/SingleProduct.jsx"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,13 +47,21 @@ const router = createBrowserRouter([
       },
       {
         path: "/products",
-        element: <Products />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Products />
+          </Suspense>
+        ),
         errorElement: <ErrorElement />,
         loader: productsLoader(queryClient),
       },
       {
         path: "/products/:id",
-        element: <SingleProduct />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <SingleProduct />
+          </Suspense>
+        ),
         errorElement: <ErrorElement />,
         loader: singleProductLoader(queryClient),
       },
@@ -89,7 +93,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/orders",
-        element: <Orders />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Orders />
+          </Suspense>
+        ),
         loader: ordersLoader(store, queryClient),
       },
     ],
